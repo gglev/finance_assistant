@@ -1,6 +1,7 @@
 from pathlib import Path
 from finance_assistant.pdf import extract_pages_from_pdf
 import json
+from finance_assistant.chunking import chunk_pages
 
 def main():
     pdf_path = Path("data/raw/COCACOLA_2022_10K.pdf")
@@ -14,6 +15,11 @@ def main():
 
     with output_path.open("r", encoding="utf-8") as file:
         saved_pages = json.load(file)
+
+    chunks = chunk_pages(saved_pages)
+    print("Amount of chunks created: ", len(chunks))
+    print("First chunk text: ", chunks[0])
+    print("Max length: ", max(len(chunk["text"]) for chunk in chunks))
 
     print("Pages in JSON: ", len(saved_pages))
     print("Data is similar: ", saved_pages == pages)
