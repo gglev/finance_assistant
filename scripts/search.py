@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from finance_assistant.retrieval import search_chunks
+from finance_assistant.generation import build_prompt, build_context
 
 def main():
     model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -23,6 +24,10 @@ def main():
         print(f"\nРезультат {rank}, сходство: {result['score']:.3f}")
         print("Страница:", result["page_number"])
         print(result["text"])
+
+    context = build_context(results)
+    prompt = build_prompt(question, context)
+    print("\nСформированный запрос:\n", prompt)
 
 if __name__ == "__main__":
     main()
