@@ -7,6 +7,7 @@ def main():
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     chunks_path = Path("data/processed/COCACOLA_2022_10K_chunks.json")
+    embeddings_path = Path("data/processed/COCACOLA_2022_10K_embeddings.npy")
 
     with chunks_path.open("r", encoding="utf-8") as file:
         chunks = json.load(file)
@@ -14,7 +15,7 @@ def main():
     texts = [chunk["text"] for chunk in chunks]
 
     embeddings = model.encode(texts, normalize_embeddings=True, show_progress_bar=True)
-    embeddings_path = Path("data/processed/COCACOLA_2022_10K_embeddings.npy")
+    
     np.save(embeddings_path, embeddings)
 
     print("Embeddings saved to: ", embeddings_path)
