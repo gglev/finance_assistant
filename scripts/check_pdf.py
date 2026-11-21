@@ -17,6 +17,12 @@ def main():
         saved_pages = json.load(file)
 
     chunks = chunk_pages(saved_pages)
+    chunks_path = Path("data/processed/COCACOLA_2022_10K_chunks.json")
+
+    with chunks_path.open("w", encoding="utf-8") as file:
+        json.dump(chunks, file, indent=2, ensure_ascii=False)
+
+    print("Chunks saved to:", chunks_path)
     print("Amount of chunks created: ", len(chunks))
     print("First chunk text: ", chunks[0])
     print("Max length: ", max(len(chunk["text"]) for chunk in chunks))
