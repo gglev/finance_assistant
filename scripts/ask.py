@@ -17,28 +17,32 @@ def main():
 
     embeddings = np.load(embeddings_path)
 
-    question = "What is the revenue of the company in 2022?"
+    question = "What were Coca-Cola's net operating revenues in 2025?"
     question_embedding = model.encode(question, normalize_embeddings=True)        
     
     results = search_chunks(chunks, embeddings, question_embedding, top_k=5)
     for rank, result in enumerate(results, start=1):
-        print(f"\nРезультат {rank}, сходство: {result['score']:.3f}")
-        print("Страница:", result["page_number"])
+        print(f"\nResult {rank}, similarity: {result['score']:.3f}")
+        print("Page:", result["page_number"])
         print(result["text"])
 
     context = build_context(results)
     prompt = build_prompt(question, context)
-    print("\nСформированный запрос:\n", prompt)
+    print("\Prompt:\n", prompt)
 
     answer = generate_answer(prompt)
-    print("\nОтвет:\n", answer)
+    print("\nAnswer:\n", answer)
 
     if answer.value is None:
-        print("В найденных фрагментах недостаточно информации для ответа на вопрос.")
+        print("In the found fragments, there is not enough information to answer the question.")
     else:
-        formatted_value = f"{answer.value:,}".replace(",", " ".replace(".", " "))
-        print(f"Ответ: {answer.indicator} в {answer.year} году составляет {formatted_value} {answer.unit}")
-        print(f"Источник: {answer.document}, страница {answer.page_number}")
+        formatted_value = (
+            f"{answer.value:,}"
+            .replace(",", " ")
+            .replace(".", ",")
+        )
+        print(f"Answer: {answer.indicator} in {answer.year} year is {formatted_value} {answer.unit}")
+        print(f"Source: {answer.document}, page {answer.page_number}")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,28 @@
+[
+    {
+        "id": "revenue_2021",
+        "question": "What were Coca-Cola's net operating revenues in 2021?",
+        "expected_value": 38655,
+        "expected_year": 2021,
+        "expected_unit": "million USD",
+        "document": "COCACOLA_2022_10K.pdf",
+        "evidence_pages": [
+            47,
+            63,
+            122
+        ]
+    },
+    {
+        "id": "operating_income_2022",
+        "question": "What was Coca-Cola's operating income in 2022?",
+        "expected_value": 10909,
+        "expected_year": 2022,
+        "expected_unit": "million USD",
+        "document": "COCACOLA_2022_10K.pdf",
+        "evidence_pages": [
+            50,
+            63,
+            122
+        ]
+    }
+]
