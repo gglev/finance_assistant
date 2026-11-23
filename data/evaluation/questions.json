@@ -10,6 +10,12 @@
             47,
             63,
             122
+        ],
+        "relevant_chunks": [
+            {
+                "page_number": 63,
+                "chunk_number": 1
+            }
         ]
     },
     {
@@ -23,6 +29,38 @@
             50,
             63,
             122
+        ],
+        "relevant_chunks": [
+            {
+                "page_number": 63,
+                "chunk_number": 1
+            }
+        ]
+    },
+    {
+        "id": "revenue_2025_unavailable",
+        "question": "What were Coca-Cola's net operating revenues in 2025?",
+        "expected_value": null,
+        "expected_year": 2025,
+        "expected_unit": null,
+        "document": "COCACOLA_2022_10K.pdf",
+        "evidence_pages": []
+    },
+    {
+        "id": "cash_and_equivalents_2022",
+        "question": "What were Coca-Cola's cash and cash equivalents as of December 31, 2022?",
+        "expected_value": 9519,
+        "expected_year": 2022,
+        "expected_unit": "million USD",
+        "document": "COCACOLA_2022_10K.pdf",
+        "evidence_pages": [
+            65
+        ],
+        "relevant_chunks": [
+            {
+                "page_number": 65,
+                "chunk_number": 1
+            }
         ]
     }
 ]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "revenue_2021",
+    "page_match": true,
+    "value_match": true,
+    "year_match": true,
+    "units_match": true,
+    "source_match": true
+  },
+  {
+    "id": "operating_income_2022",
+    "page_match": true,
+    "value_match": true,
+    "year_match": true,
+    "units_match": true,
+    "source_match": true
+  },
+  {
+    "id": "revenue_2025_unavailable",
+    "refusal_match": true
+  },
+  {
+    "id": "cash_and_equivalents_2022",
+    "page_match": true,
+    "value_match": true,
+    "year_match": true,
+    "units_match": true,
+    "source_match": true
+  }
+]

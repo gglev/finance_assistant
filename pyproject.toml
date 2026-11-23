@@ -13,7 +13,9 @@ dependencies = ["pymupdf",
     "sentence-transformers",
     "numpy",
      "httpx",
-     "pydantic"]
+     "pydantic",
+     "fastapi",
+     "uvicorn"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

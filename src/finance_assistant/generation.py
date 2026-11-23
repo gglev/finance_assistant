@@ -14,9 +14,9 @@ def build_context(results: list[dict]) -> str:
 
     for number, result in enumerate(results, start=1):
         fragments.append(
-            f"Фрагмент {number}\n"
-            f"Документ: {result['document']}\n"
-            f"Страница PDF: {result['page_number']}\n"
+            f"Fragment {number}\n"
+            f"Document: {result['document']}\n"
+            f"Page of PDF: {result['page_number']}\n"
             f"{result['text']}"
         )
 
@@ -24,8 +24,8 @@ def build_context(results: list[dict]) -> str:
 
 def build_prompt(question: str, context: str) -> str:
     return (
-        f"Вопрос: {question}\n\n"
-        f"Контекст:\n{context}\n\n"
+        f"Question: {question}\n\n"
+        f"Context:\n{context}\n\n"
         "Верни ответ по заданной JSON-схеме.\n"
         "В value укажи числовое значение без разделителей тысяч.\n"
         "Сохраняй масштаб единиц источника и указывай его в unit.\n"

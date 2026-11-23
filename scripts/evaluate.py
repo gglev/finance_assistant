@@ -21,6 +21,8 @@ def main():
 
     summaries = []
 
+    retrieval_scores = []
+
     for case in cases:
         print(f"\n{case['id']}")
 
@@ -29,6 +31,36 @@ def main():
         )
 
         results = search_chunks(chunks, embeddings, question_embedding, top_k=5)
+
+        if case.get("relevant_chunks"):
+            first_relevant_rank = None
+
+            for rank,result in enumerate(results, start=1):
+                chunk_match = (
+                    result["document"] == case["document"]
+                    and
+                    {
+                        "page_number": result["page_number"],
+                        "chunk_number": result["chunk_number"]
+                    } in case["relevant_chunks"]
+                )
+
+                if chunk_match:
+                    first_relevant_rank = rank
+                    break
+
+            hit_at_5 = first_relevant_rank is not None
+            reciprocal_rank = (
+                1 / first_relevant_rank
+                if first_relevant_rank is not None
+                else 0.0
+            )
+
+            retrieval_scores.append({
+                "id": case["id"],
+                "hit_at_5": hit_at_5,
+                "reciprocal_rank": reciprocal_rank,
+            })
 
         print(f"Question: {case['question']}")
 
@@ -58,6 +90,18 @@ def main():
         prompt = build_prompt(case["question"], context)
         answer = generate_answer(prompt)
 
+        if case["expected_value"] is None:
+            refusal_match = answer.value is None
+
+            print("\nModel answer:", answer)
+            print("Correct refusal:", refusal_match)
+
+            summaries.append({
+                "id": case["id"],
+                "refusal_match": refusal_match})
+
+            continue
+
         value_match = answer.value == case["expected_value"]
         year_match = answer.year == case["expected_year"]
 
@@ -82,9 +126,40 @@ def main():
             "units_match": units_match,
             "source_match": source_match
         })
+    # if retrieval_scores:
+    #     mrr = sum(score["reciprocal_rank"] for score in retrieval_scores) / len(retrieval_scores)
+    #     print("MRR@5", mrr)
+
     print("\nSummary of results:")
     for summary in summaries:
         print(summary)    
+
+    if retrieval_scores:
+        print("\nRetrieval results:")
+        print(f"{'question':<32}{'Hit@5':>8}{'RR@5':>8}")
+
+        for score in retrieval_scores:
+            print(
+                f"{score['id']:<32}"
+                f"{str(score['hit_at_5']):>8}"
+                f"{score['reciprocal_rank']:>8.3f}"
+            )
+
+        hit_rate = sum(score["hit_at_5"] for score in retrieval_scores) / len(retrieval_scores)
+
+        mrr = sum(score["reciprocal_rank"] for score in retrieval_scores) / len(retrieval_scores)
+
+        print(f"Labeled questions: {len(retrieval_scores)}")
+        print(f"Hit@5: {hit_rate:.3f}")
+        print(f"MRR@5: {mrr:.3f}")
+
+    report_path = Path("reports/evaluation.json")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with report_path.open("w", encoding="utf-8") as file:
+        json.dump(summaries, file, ensure_ascii=False, indent=2)
+
+    print("Report saved to: ", report_path)
 
 if __name__ == "__main__":
     main()
